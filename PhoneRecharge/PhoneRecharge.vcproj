@@ -171,6 +171,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\AtControl.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\dllmain.cpp"
 				>
 				<FileConfiguration
@@ -193,7 +197,27 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\MicrosoftSR.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\PhoneRecharge.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\PSerialPort.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\QISR.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Record.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\SRCharge.cpp"
 				>
 			</File>
 			<File
@@ -223,7 +247,31 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\AtControl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MicrosoftSR.h"
+				>
+			</File>
+			<File
 				RelativePath=".\PhoneRecharge.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PSerialPort.h"
+				>
+			</File>
+			<File
+				RelativePath=".\QISR.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Record.h"
+				>
+			</File>
+			<File
+				RelativePath=".\SRCharge.h"
 				>
 			</File>
 			<File
