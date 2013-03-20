@@ -172,7 +172,7 @@ DWORD WINAPI CPSerialPort::ReadPortThread(LPVOID lpParameter)
   }
 
 #ifdef _DEBUG
-  TRACE1(_T("PSerialPort %s\n"), _T("Success"));
+  OutputDebugString(_T("PSerialPort Success\n"));
 #endif
 
   //返回
@@ -683,7 +683,7 @@ WORD CPSerialPort::SaveComData(const char* strdata, DWORD wLength)
 | 返回值：  成功返回0，失败返回1                                   |
 | 说明：无                                                         |
 |******************************************************************/
-WORD CPSerialPort::ReadBuffer(char* strData, WORD &wLength)
+WORD CPSerialPort:: ReadBuffer(char* strData, WORD &wLength)
 {
   //参数检测
   if (strData == NULL)
