@@ -20,10 +20,19 @@
 |                                                                  |
 |******************************************************************/
 #pragma once
-
+#include <string.h>;
 class CQISR
 {
+
 public:
+	void initQISR();
+	int  SendSyntax(char * asr_keywords_utf8);//上传语法并获取语法ID
+	const char* getExID(void);//返回语法ID
+	int SetExID(char exID[128]);
+	int SpeechRecognition(char* wavfile,char* &SpeechText);//语音识别wav文件并返回文本
 	CQISR(void);
 	~CQISR(void);
+private:
+	char exID[128];//语法ID
+
 };
