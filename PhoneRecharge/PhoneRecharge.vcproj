@@ -197,6 +197,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\IFSR.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\MicrosoftSR.cpp"
 				>
 			</File>
@@ -248,6 +252,10 @@
 			>
 			<File
 				RelativePath=".\AtControl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\IFSR.h"
 				>
 			</File>
 			<File

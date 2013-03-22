@@ -4,14 +4,22 @@
 #include "stdafx.h"
 #include "PhoneRecharge.h"
 #include "SRCharge.h"
+#include "AtControl.h"
+#include "QISR.h"
+#include "MicrosoftSR.h"
 
 
 // 这是导出变量的一个示例
 PHONERECHARGE_API int nPhoneRecharge=0;
 
 // 这是导出函数的一个示例。
+static CIFSR *g_pclSr = NULL;
+static CAtControl *g_pclAtCtrl = NULL;
+
 PHONERECHARGE_API int fnPhoneRecharge(void)
 {
+  //if(g_pclSr == NULL)
+    //g_pclSr = new QISR();
 	return 42;
 }
 
