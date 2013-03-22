@@ -15,6 +15,7 @@ PHONERECHARGE_API int nPhoneRecharge=0;
 // 这是导出函数的一个示例。
 static CIFSR *g_pclSr = NULL;
 static CAtControl *g_pclAtCtrl = NULL;
+static CSRCharge *g_pclSRcharge = NULL;
 
 PHONERECHARGE_API int fnPhoneRecharge(void)
 {
@@ -23,8 +24,12 @@ PHONERECHARGE_API int fnPhoneRecharge(void)
 	return 42;
 }
 
-_declspec(dllexport) int phoneRecharge(char* CardPassword,char* PhoneNum)  
+_declspec(dllexport) int phoneRecharge(char* strPhoneNum,char* strCardPassword)  
 {  	
+  g_pclSRcharge = new CSRCharge();
+  g_pclSRcharge->SRChargeInit();
+  g_pclSRcharge->Recharge(strCardPassword, strPhoneNum);
+
 	return 0;  
 }  
 // 这是已导出类的构造函数。
