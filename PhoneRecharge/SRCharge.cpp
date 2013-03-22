@@ -31,11 +31,11 @@ CSRCharge::CSRCharge(void)
 CSRCharge::~CSRCharge(void)
 {
 }
-int SRChargeInit()
+int CSRCharge::SRChargeInit()
 {
 	return 0;
 }
-int Recharge(char* strPhoneNum,char* strCardPassword)
+int CSRCharge::Recharge(char* strPhoneNum,char* strCardPassword)
 {
   printf("输出充值卡密码：s%,充值电话号：s%.");
   return 0;
