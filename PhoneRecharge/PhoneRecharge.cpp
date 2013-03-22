@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "PhoneRecharge.h"
+#include "SRCharge.h"
 
 
 // 这是导出变量的一个示例
@@ -14,6 +15,10 @@ PHONERECHARGE_API int fnPhoneRecharge(void)
 	return 42;
 }
 
+_declspec(dllexport) int phoneRecharge(char* CardPassword,char* PhoneNum)  
+{  	
+	return 0;  
+}  
 // 这是已导出类的构造函数。
 // 有关类定义的信息，请参阅 PhoneRecharge.h
 CPhoneRecharge::CPhoneRecharge()

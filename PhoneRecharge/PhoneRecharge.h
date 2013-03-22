@@ -10,6 +10,7 @@
 #define PHONERECHARGE_API __declspec(dllimport)
 #endif
 
+
 // 此类是从 PhoneRecharge.dll 导出的
 class PHONERECHARGE_API CPhoneRecharge {
 public:
@@ -20,3 +21,5 @@ public:
 extern PHONERECHARGE_API int nPhoneRecharge;
 
 PHONERECHARGE_API int fnPhoneRecharge(void);
+
+
