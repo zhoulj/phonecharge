@@ -88,5 +88,4 @@ protected:
 
 private:
 	char exID[128];//”Ô∑®ID
-
 };
