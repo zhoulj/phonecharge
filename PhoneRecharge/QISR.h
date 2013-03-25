@@ -45,17 +45,26 @@ public:
   | 返回值：  无                                                     |
   | 说明：无                                                         |
   |******************************************************************/
-	virtual int FileSpeechRecognition(char* wavfile,char* &SpeechText);
+	virtual int FileSpeechRecognition(char* wavfile,char* SpeechText);
 
 	//memory recognition
   virtual int MemorySpeechRecognition(char* wavBuffer, UINT uLen, char* &SpeechText);
+ /*******************************************************************
+  | 函数名称：设置语法ID                                             |
+  | 函数功能：从配置文件中获得语法ID，并设置语法ID公共变量           |
+  | 输入参数：exID数字和字母的长字符串                               |
+  | 输出参数：无                                                     |
+  | 返回值：  0成功，其他失败                                        |
+  | 说明：无                                                         |
+  |******************************************************************/
+	int SetExID(char exID[128]);	
 
 	//Close interface
 	virtual void SRClose();
 
 	//
 	CQISR(void);
-	~CQISR(void);
+	~CQISR(void);  
 
 protected:
  /*******************************************************************
@@ -76,16 +85,7 @@ protected:
   | 说明：无                                                         |
   |******************************************************************/
 	const char* getExID(void);
- /*******************************************************************
-  | 函数名称：设置语法ID                                             |
-  | 函数功能：从配置文件中获得语法ID，并设置语法ID公共变量           |
-  | 输入参数：exID数字和字母的长字符串                               |
-  | 输出参数：无                                                     |
-  | 返回值：  0成功，其他失败                                        |
-  | 说明：无                                                         |
-  |******************************************************************/
-	int SetExID(char exID[128]);
 
 private:
-	char exID[128];//语法ID
+  char exID[128];//语法ID
 };

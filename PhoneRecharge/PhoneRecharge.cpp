@@ -7,15 +7,16 @@
 #include "AtControl.h"
 #include "QISR.h"
 #include "MicrosoftSR.h"
+#include "LogFile.h"
 
-
-// 这是导出变量的一个示例
+// 这是导出变量的一个示例 
 PHONERECHARGE_API int nPhoneRecharge=0;
 
 // 这是导出函数的一个示例。
 static CIFSR *g_pclSr = NULL;
 static CAtControl *g_pclAtCtrl = NULL;
 static CSRCharge *g_pclSRcharge = NULL;
+
 
 PHONERECHARGE_API int fnPhoneRecharge(void)
 {
@@ -24,13 +25,13 @@ PHONERECHARGE_API int fnPhoneRecharge(void)
 	return 42;
 }
 
-_declspec(dllexport) int phoneRecharge(char* strPhoneNum,char* strCardPassword)  
+int phoneRecharge(char* strPhoneNum,char* strCardPassword)  
 {  	
+  int result=0;
   g_pclSRcharge = new CSRCharge();
   g_pclSRcharge->SRChargeInit();
-  g_pclSRcharge->Recharge(strCardPassword, strPhoneNum);
-
-	return 0;  
+  result = g_pclSRcharge->Recharge(strCardPassword, strPhoneNum);
+	return result;  
 }  
 // 这是已导出类的构造函数。
 // 有关类定义的信息，请参阅 PhoneRecharge.h

@@ -5,6 +5,7 @@
 #include "windows.h"
 #include "./include/qisr.h"
 #include <conio.h>
+#include "LogFile.h"
 
 
 #pragma comment(lib,"./lib/msc.lib")
@@ -12,13 +13,21 @@
 
 const int BUFFER_NUM = 4096;
 const int MAX_KEYWORD_LEN = 4096;
+static CLogFileEx *g_pLogFile = NULL;
+
 CQISR::CQISR(void)
 {
-   exID[128]=NULL;
+  exID[128]=NULL;
+  g_pLogFile = new CLogFileEx();
+  
+//  LogFileEx gLog(".\\Log", LogFileEx :: MONTH);
+  //g_pLogFile->GetFileName()
 }
 
 CQISR::~CQISR(void)
 {
+  if(g_pLogFile != NULL)
+    delete g_pLogFile;
 }
 
 /*******************************************************************
@@ -31,7 +40,15 @@ CQISR::~CQISR(void)
 |******************************************************************/
 void CQISR::SRInit()
 {
-
+  int ret = MSP_SUCCESS;
+  //appid 请勿随意改动
+  ret = QISRInit("appid=5142e191");
+  if(ret != MSP_SUCCESS)
+  {
+    printf("QISRInit with errorCode: %d \n", ret);
+    return;
+  }
+  return;
 }
 
 /*******************************************************************
@@ -43,7 +60,7 @@ void CQISR::SRInit()
 | 返回值：  无                                                     |
 | 说明：无                                                         |
 |******************************************************************/
-int CQISR::FileSpeechRecognition(char* wavfile,char* &SpeechText)
+int CQISR::FileSpeechRecognition(char* wavfile,char* SpeechText)
 {
   int ret = MSP_SUCCESS;
   int i = 0;
@@ -137,6 +154,8 @@ int CQISR::FileSpeechRecognition(char* wavfile,char* &SpeechText)
       else
       {
         printf("[%d]:get result[%d/%d]\n",(loop_count), ret, rslt_status);
+        //memcpy(SpeechText,rslt_status,strlen(rslt_status));      
+        //MessageBox(0,rslt_status,"TEST",MB_OK);
       }
       Sleep(500);
     } while (rslt_status != MSP_REC_STATUS_COMPLETE && loop_count++ < 30);
@@ -210,7 +229,6 @@ int  CQISR::SendSyntax(char * asr_keywords_utf8)
 
   QISRSessionEnd(sessionID, "normal");
   return 0;
-  return 0;
 }
 
 /*******************************************************************
@@ -236,11 +254,12 @@ const char* CQISR::getExID(void)
 |******************************************************************/
 int CQISR::SetExID(char strexID[128])
 {
-  if (strexID = NULL)
+  if (strexID != NULL)
   {
-    return -1;
-  }
-  memcpy((void*)exID, strexID, strlen(strexID));
-  return 0;
+    strcpy(exID,strexID);
+    //memcpy((void*)exID, strexID, strlen(strexID));
+    return 0;
+  }  
+  return -1;
 }
 

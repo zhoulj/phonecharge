@@ -4,6 +4,8 @@
 // 任何其他项目上不应定义此符号。这样，源文件中包含此文件的任何其他项目都会将
 // PHONERECHARGE_API 函数视为是从 DLL 导入的，而此 DLL 则将用此宏定义的
 // 符号视为是被导出的。
+
+
 #ifdef PHONERECHARGE_EXPORTS
 #define PHONERECHARGE_API __declspec(dllexport)
 #else
@@ -18,8 +20,10 @@ public:
 	// TODO: 在此添加您的方法。
 };
 
-extern "C" PHONERECHARGE_API int nPhoneRecharge;
 
+extern "C" PHONERECHARGE_API int nPhoneRecharge;
 extern "C" PHONERECHARGE_API int fnPhoneRecharge(void);
+extern "C" _declspec(dllexport) int phoneRecharge(char* strPhoneNum,char* strCardPassword);  
+
 
 

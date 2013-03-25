@@ -24,7 +24,7 @@ public:
   | 返回值：  无                                                     |
   | 说明：无                                                         |
   |******************************************************************/
-	virtual int FileSpeechRecognition(char* wavfile,char* &SpeechText) = 0 ;
+	virtual int FileSpeechRecognition(char* wavfile,char* SpeechText) = 0 ;
 
 	//memory recognition
   virtual int MemorySpeechRecognition(char* wavBuffer, UINT uLen, char* &SpeechText) = 0;
