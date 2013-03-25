@@ -21,7 +21,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
-			CharacterSet="1"
+			CharacterSet="2"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -201,6 +201,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\LogFile.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\MicrosoftSR.cpp"
 				>
 			</File>
@@ -256,6 +260,10 @@
 			</File>
 			<File
 				RelativePath=".\IFSR.h"
+				>
+			</File>
+			<File
+				RelativePath=".\LogFile.h"
 				>
 			</File>
 			<File
