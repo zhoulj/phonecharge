@@ -9,8 +9,8 @@
 			Name="Debug|Win32"
 			>
 			<DebugSettings
-				Command="#pragma comment(lib,&quot;./lib/msc.lib&quot;)"
-				WorkingDirectory="$(SolutionDir)..\Bin"
+				Command=".\bin\Testphone.exe"
+				WorkingDirectory=".\bin"
 				CommandArguments=""
 				Attach="false"
 				DebuggerType="3"

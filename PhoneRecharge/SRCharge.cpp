@@ -23,9 +23,12 @@
 #include "StdAfx.h"
 #include <iostream>
 #include <string>
+#include <Windows.h> 
 #include "SRCharge.h"
 #include "QISR.h"
-#include "stdio.h"
+
+
+using namespace std;
 
 // 这是导出函数的一个示例。
 static CIFSR *g_pclSr = NULL;
@@ -42,20 +45,49 @@ CSRCharge::~CSRCharge(void)
 }
 int CSRCharge::SRChargeInit()
 {  
+  //创建录音实例并设置录音参数
+  m_pPlayer = CSoundBase::GetInstance();
+  waveFormat.bits = BITS_16;
+  waveFormat.channel = CHANNEL_SINGLE;
+  waveFormat.samples = SAMPLES_16000;
 	return 0;
 }
+/*CIniWriter(char* szFileName)
+{
+  memset(m_szFileName, 0x00, 255);
+  memcpy(m_szFileName, szFileName, strlen(szFileName));
+  char szValue[255];
+  sprintf(szValue, "%d", iValue);
+  WritePrivateProfileString(szSection,  szKey, szValue, m_szFileName); 
+}*/
 int CSRCharge::Recharge(char* strPhoneNum,char* strCardPassword)
 {  
+  string strTemp = "";
   const char* result = NULL;
-  char cresult[500];
-  //string strfilename = "";
-  g_pQISR->SRInit();
-  g_pQISR->SetExID("30764386a1c7321e34b1b079692d8a69");
-  g_pQISR->FileSpeechRecognition("阿里山龙胆.wav",cresult);
-  if (cresult != NULL)
+  char cResult[500],cTemp[3];
+  int iResult = 0;
+
+  //录制wave文件
+ // if(m_pPlayer->Record(TEXT("Recharge.wav"),&waveFormat) == FALSE)
+  //{
+   // MessageBox(NULL,TEXT("FAILED"),TEXT(""),MB_OK);
+ // }
+
+  //语音识别
+  iResult = g_pQISR->SRInit();
+  if (iResult != 0)
+    return iResult;
+  iResult = g_pQISR->SetExID("30764386a1c7321e34b1b079692d8a69");
+  if (iResult != 0)
+    return iResult;
+  iResult = g_pQISR->FileSpeechRecognition("阿里山龙胆.wav",cResult);  
+  if (iResult != 0)
   {
-   // printf("输出充值卡密码：s%,充值电话号：s%.",cresult);
-    MessageBox(0,cresult,"TEST",MB_OK);
+    //itoa(iResult,cTemp,10);    
+    //MessageBox(0,cTemp,"TEST",MB_OK);
+    return iResult;
   }
+  MessageBox(0,cResult,"TEST",MB_OK);
+  
   return 0;
 }

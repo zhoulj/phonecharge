@@ -85,7 +85,7 @@ protected:
 	{
 		assert(szPath);
 		WIN32_FIND_DATA wfd;
-		char temp[MAX_PATH + 1] = {0};
+		char temp[MAX_PATH + 5] = {0};
 		if(FindFirstFile(szPath, &wfd) == INVALID_HANDLE_VALUE && CreateDirectory(szPath, NULL) == 0)
 		{
 			strcat(strcpy(temp, szPath), "Create Fail. Exit Now! Error ID :");
@@ -97,7 +97,7 @@ protected:
 		{
 			GetFullPathName(szPath, MAX_PATH, temp, NULL);
 			_szPath = new char[strlen(temp) + 1];
-			assert(_szPath);
+			assert(_szPath);  
 			strcpy(_szPath, temp);
 		}
 	}

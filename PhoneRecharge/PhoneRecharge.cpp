@@ -10,7 +10,7 @@
 #include "LogFile.h"
 
 // 这是导出变量的一个示例 
-PHONERECHARGE_API int nPhoneRecharge=0;
+//PHONERECHARGE_API int nPhoneRecharge=0;
 
 // 这是导出函数的一个示例。
 static CIFSR *g_pclSr = NULL;
@@ -18,12 +18,12 @@ static CAtControl *g_pclAtCtrl = NULL;
 static CSRCharge *g_pclSRcharge = NULL;
 
 
-PHONERECHARGE_API int fnPhoneRecharge(void)
-{
+//PHONERECHARGE_API int fnPhoneRecharge(void)
+//{
   //if(g_pclSr == NULL)
     //g_pclSr = new QISR();
-	return 42;
-}
+	//return 42;
+//}
 
 int phoneRecharge(char* strPhoneNum,char* strCardPassword)  
 {  	

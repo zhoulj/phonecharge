@@ -6,7 +6,7 @@
 #include "./include/qisr.h"
 #include <conio.h>
 #include "LogFile.h"
-
+using namespace std;
 
 #pragma comment(lib,"./lib/msc.lib")
 
@@ -38,17 +38,18 @@ CQISR::~CQISR(void)
 | 返回值：  无                                                     |
 | 说明：无                                                         |
 |******************************************************************/
-void CQISR::SRInit()
+int CQISR::SRInit()
 {
   int ret = MSP_SUCCESS;
   //appid 请勿随意改动
-  ret = QISRInit("appid=5142e191");
+  ret = QISRInit("appid=5142e191");    
   if(ret != MSP_SUCCESS)
   {
+    //g_pLogFile->Log("QISRInit with errorCode: %d \n",ret);
     printf("QISRInit with errorCode: %d \n", ret);
-    return;
-  }
-  return;
+    return ret;
+  }  
+  return 0;
 }
 
 /*******************************************************************
@@ -66,9 +67,9 @@ int CQISR::FileSpeechRecognition(char* wavfile,char* SpeechText)
   int i = 0;
   FILE* fp = NULL;
   char buff[BUFFER_NUM];
+  string strTextSR = "";
   int len;
   int status = MSP_AUDIO_SAMPLE_CONTINUE, ep_status = -1, rec_status = -1, rslt_status = -1;
-
   const char* param = "rst=plain,sub=asr,ssm=1,aue=speex,auf=audio/L16;rate=16000";//注意sub=asr
   const char* sess_id = QISRSessionBegin(exID, param, &ret);//将语法ID传入QISRSessionBegin
   if ( MSP_SUCCESS != ret )
@@ -84,7 +85,7 @@ int CQISR::FileSpeechRecognition(char* wavfile,char* SpeechText)
     QISRSessionEnd(sess_id, "normal");
     return -1;
   }
-
+    
   printf("writing audio...\n");
   while ( !feof(fp) )
   {
@@ -150,24 +151,23 @@ int CQISR::FileSpeechRecognition(char* wavfile,char* SpeechText)
         printf("[%d]:get result[%d/%d]: %s\n", (loop_count), ret, rslt_status, result);
         strcpy(asr_result+pos_of_result,result);
         pos_of_result += strlen(result);
+        strTextSR = result;
+        //if (strTextSR.find("input=") > 0)
+          //strTextSR = strTextSR.substr(strTextSR.find("input=") + 6,strTextSR.length());
+        strTextSR = strTextSR.substr(strTextSR.find("input=") + 6,strTextSR.length());
+        strcpy(SpeechText,strTextSR.c_str());//zlj add        
       }
       else
       {
         printf("[%d]:get result[%d/%d]\n",(loop_count), ret, rslt_status);
-        //memcpy(SpeechText,rslt_status,strlen(rslt_status));      
-        //MessageBox(0,rslt_status,"TEST",MB_OK);
       }
       Sleep(500);
     } while (rslt_status != MSP_REC_STATUS_COMPLETE && loop_count++ < 30);
     if (strcmp(asr_result,"")==0)
     {
       printf("no result\n");
+      return MSP_ERROR_TIME_OUT;
     }
-    else
-    {
-      printf("Have resultv is \n.",asr_result);
-    }
-
   }
 
   QISRSessionEnd(sess_id, NULL);

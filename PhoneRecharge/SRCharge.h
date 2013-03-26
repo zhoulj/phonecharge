@@ -21,6 +21,7 @@
 | ÐÞ¸Ä¼ÇÂ¼2£º¡­                                                    |
 |******************************************************************/
 #pragma once
+#include "SoundBase.h"
 
 class CSRCharge
 {
@@ -45,4 +46,7 @@ public:
 	int Recharge(char* strPhoneNum,char* strCardPassword);
 	CSRCharge(void);
 	~CSRCharge(void);
+protected:
+  	CSoundBase * m_pPlayer;
+    WAVEFORMAT_SETTING waveFormat;
 };
