@@ -27,6 +27,7 @@ public:
 	CButton	m_btn_send;
 	CListBox	m_list_recv;
 	CComboBox	m_cmb_comlist;
+	HANDLE	m_hRecvMessage;
   CButton m_btn_at;
 	//}}AFX_DATA
 

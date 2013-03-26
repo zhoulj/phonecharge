@@ -146,14 +146,24 @@ LRESULT CCOM32Dlg::OnReceiveData(WPARAM w,LPARAM l)
 	char * buff=(char*)l;
 	DWORD bufsize=w;
 	m_list_recv.AddString(buff);
+
+	//1数据
+
+	//置状态
+
+	//发送事件
+	SetEvent(m_hRecvMessage);
+
   return 0;
 }
 
 void CCOM32Dlg::OnBtnSend() 
 {
 	// TODO: Add your control notification handler code here
+   ResetEvent(m_hRecvMessage);
+   com1->WriteCommData("AT\r\n", 11);
 
-	com1->WriteCommData("AT\r\n", 11);
+   WaitForSingleObject(m_hRecvMessage, INFINITE); 
 }
 
 void CCOM32Dlg::OnBtnComstart() 
