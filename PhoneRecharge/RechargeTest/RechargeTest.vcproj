@@ -60,7 +60,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="E:\project\phonecharge.git\trunk\PhoneRecharge\bin\Testphone.exe"
+				OutputFile="..\bin\Testphone.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="2"
