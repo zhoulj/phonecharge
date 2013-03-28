@@ -108,8 +108,31 @@ public:
 	const char * GetPath();
 	void Log(LPCVOID lpBuffer, DWORD dwLength);
 	void Log(const char *szText);
+
+  //定义静态  
+  static CLogFileEx * GetInstance()
+  {
+    if (m_pInstance == NULL) 
+      m_pInstance = new CLogFileEx();
+    return m_pInstance; 
+  }
 private://屏蔽函数
 	CLogFileEx(const CLogFileEx&);
 	CLogFileEx&operator = (const CLogFileEx&);
+
+
+  //定义静态类实例变量
+  static  CLogFileEx *m_pInstance;
+  class CGarbo // 它的唯一工作就是在析构函数中删除CSingleton的实例 
+  {
+  public:
+    ~CGarbo()
+    { 
+      if (CLogFileEx::m_pInstance)
+        delete CLogFileEx::m_pInstance;
+    }
+  };
+  static CGarbo Garbo; // 声明一个静态成员，在程序结束时，系统会调用它的析构函数，注意这里仅仅是声明，还需要在相应cpp文件中对静态成员进行定义。
+
 };
 #endif

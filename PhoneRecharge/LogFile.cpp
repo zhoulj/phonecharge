@@ -54,10 +54,10 @@ void CLogFile::WriteLog( LPCVOID lpBuffer, DWORD dwLength)
 		time(&now);
 		strftime(temp, 20, "%Y-%m-%d %H:%M:%S", localtime(&now));
 		WriteFile(_hFile, "\xd\xa#-----------------------------", 32, &dwWriteLength, NULL);
-		WriteFile(_hFile, temp, 19, &dwWriteLength, NULL);
+		WriteFile(_hFile, temp, 19, &dwWriteLength, NULL);   
 		WriteFile(_hFile, "-----------------------------#\xd\xa", 32, &dwWriteLength, NULL);
 		WriteFile(_hFile, lpBuffer, dwLength, &dwWriteLength, NULL);
-		WriteFile(_hFile, "\xd\xa", 2, &dwWriteLength, NULL);
+		//WriteFile(_hFile, "\xd\xa", 2, &dwWriteLength, NULL);
 		FlushFileBuffers(_hFile);
 	}
 }
@@ -116,6 +116,8 @@ void CLogFile::Log(const char *szText)
 
 
 //CLogFileEx Code Part
+CLogFileEx* CLogFileEx::m_pInstance = NULL;
+CLogFileEx::CGarbo CLogFileEx::Garbo;
 CLogFileEx::CLogFileEx(const char *szPath , LOG_TYPE iType )
 {
 	_szPath = NULL;
@@ -146,7 +148,7 @@ void CLogFileEx::Log(LPCVOID lpBuffer, DWORD dwLength)
 		strftime(temp, 9, format[_iType], localtime(&now));
 		if(strcmp(_szLastDate, temp) != 0)//更换文件名
 		{
-			strcat(strcpy(_szFileName, _szPath), "\\");
+			strcat(strcpy(_szFileName, _szPath), "\\");// "\\Log\\");
 			strcat(strcat(_szFileName, temp), ".log");
 			strcpy(_szLastDate, temp);
 			Close();

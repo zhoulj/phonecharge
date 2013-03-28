@@ -22,6 +22,8 @@
 |******************************************************************/
 #pragma once
 #include "SoundBase.h"
+#include "AtControl.h"
+#include "LogFile.h"
 
 class CSRCharge
 {
@@ -49,4 +51,6 @@ public:
 protected:
   	CSoundBase * m_pPlayer;
     WAVEFORMAT_SETTING waveFormat;
+private:
+  CLogFileEx * m_pLogFileEx;
 };

@@ -21,8 +21,8 @@ public:
 };
 
 
-extern "C" PHONERECHARGE_API int nPhoneRecharge;
-extern "C" PHONERECHARGE_API int fnPhoneRecharge(void);
+//extern "C" PHONERECHARGE_API int nPhoneRecharge;
+//extern "C" PHONERECHARGE_API int fnPhoneRecharge(void);
 extern "C" _declspec(dllexport) int phoneRecharge(char* strPhoneNum,char* strCardPassword);  
 
 

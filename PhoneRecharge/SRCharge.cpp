@@ -31,8 +31,9 @@
 using namespace std;
 
 // 这是导出函数的一个示例。
-static CIFSR *g_pclSr = NULL;
+//static CIFSR *g_pclSr = NULL;
 static CQISR *g_pQISR = NULL;
+static CAtControl *g_pclAtCtrl = NULL;
 
 CSRCharge::CSRCharge(void)
 {
@@ -41,7 +42,10 @@ CSRCharge::CSRCharge(void)
 
 CSRCharge::~CSRCharge(void)
 {
-  delete g_pQISR;
+  if(g_pQISR)
+    delete g_pQISR;
+  if(g_pclAtCtrl)
+    delete g_pclAtCtrl;
 }
 int CSRCharge::SRChargeInit()
 {  
@@ -50,6 +54,8 @@ int CSRCharge::SRChargeInit()
   waveFormat.bits = BITS_16;
   waveFormat.channel = CHANNEL_SINGLE;
   waveFormat.samples = SAMPLES_16000;
+  //初始化At指令设备
+  g_pclAtCtrl = new CAtControl();
 	return 0;
 }
 /*CIniWriter(char* szFileName)
@@ -62,32 +68,44 @@ int CSRCharge::SRChargeInit()
 }*/
 int CSRCharge::Recharge(char* strPhoneNum,char* strCardPassword)
 {  
-  string strTemp = "";
-  const char* result = NULL;
   char cResult[500],cTemp[3];
-  int iResult = 0;
+  int nResult = 0;
 
-  //录制wave文件
- // if(m_pPlayer->Record(TEXT("Recharge.wav"),&waveFormat) == FALSE)
-  //{
-   // MessageBox(NULL,TEXT("FAILED"),TEXT(""),MB_OK);
- // }
+
+  //At初始化
+  nResult = g_pclAtCtrl->AtInit();
+  if (nResult != 0)
+    return nResult;  
 
   //语音识别
-  iResult = g_pQISR->SRInit();
-  if (iResult != 0)
-    return iResult;
-  iResult = g_pQISR->SetExID("30764386a1c7321e34b1b079692d8a69");
-  if (iResult != 0)
-    return iResult;
-  iResult = g_pQISR->FileSpeechRecognition("阿里山龙胆.wav",cResult);  
-  if (iResult != 0)
-  {
-    //itoa(iResult,cTemp,10);    
-    //MessageBox(0,cTemp,"TEST",MB_OK);
-    return iResult;
-  }
-  MessageBox(0,cResult,"TEST",MB_OK);
+  nResult = g_pQISR->SRInit();
+  if (nResult != 0)
+    return nResult;
+  nResult = g_pQISR->SetExID("30764386a1c7321e34b1b079692d8a69");
+  if (nResult != 0)
+    return nResult;
+
+  //13800138000充值流程处理
+  nResult = g_pclAtCtrl->AtDial("13800138000");
+  if (nResult != 0)
+    return nResult; 
   
+  //录制wave文件
+  if (m_pPlayer->Record(TEXT("RechargeSpeech.wav"),&waveFormat) == FALSE)
+  {
+    m_pLogFileEx->Log("Rec---Record RechargeSpeech wave file fail.");    
+  }
+  else
+  {  
+    nResult = g_pQISR->FileSpeechRecognition("阿里山龙胆.wav",cResult);  
+    if (nResult != 0)
+    {
+      //itoa(iResult,cTemp,10);    
+      //MessageBox(0,cTemp,"TEST",MB_OK);
+      return nResult;
+    }
+    MessageBox(0,cResult,"TEST",MB_OK);
+  }
+   
   return 0;
 }

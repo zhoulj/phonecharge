@@ -5,8 +5,8 @@
 
 enum
 {
-	MSP_SUCCESS								= 0,
-	MSP_ERROR_FAIL							= -1,
+	MSP_SUCCESS						    		= 0,
+	MSP_ERROR_FAIL						  	= -1,
 	MSP_ERROR_EXCEPTION						= -2,
 
 	/* General errors 10100(0x2774) */
@@ -152,13 +152,13 @@ enum
 	MSP_ERROR_LOGIN_SYSTEM_ERROR            = 11099, 	/* 0x2B5B */   /* ÏµÍ³´íÎó */
 
 	/* Error codes of HCR */
-	MSP_ERROR_HCR_GENERAL					= 11100,
+	MSP_ERROR_HCR_GENERAL					      = 11100,
 	MSP_ERROR_HCR_RESOURCE_NOT_EXIST		= 11101,
-	MSP_ERROR_HCR_CREATE					= 11102,
-	MSP_ERROR_HCR_DESTROY					= 11103,
-	MSP_ERROR_HCR_START						= 11104,
-	MSP_ERROR_HCR_APPEND_STROKES			= 11105,
-	MSP_ERROR_HCR_GET_RESULT				= 11106,
+	MSP_ERROR_HCR_CREATE					      = 11102,
+	MSP_ERROR_HCR_DESTROY					      = 11103,
+	MSP_ERROR_HCR_START						      = 11104,
+	MSP_ERROR_HCR_APPEND_STROKES			  = 11105,
+	MSP_ERROR_HCR_GET_RESULT				    = 11106,
 	MSP_ERROR_HCR_SET_PREDICT_DATA			= 11107,
 	MSP_ERROR_HCR_GET_PREDICT_RESULT		= 11108,
 
@@ -167,13 +167,13 @@ enum
 	MSP_ERROR_HTTP_BASE						= 12000,	/* 0x2EE0 */
 
 	/*Error codes of ISV */
-	MSP_ERROR_ISV_NO_USER                   = 13000,	/* 32C8 */    /* the user doesn't exist */
+	MSP_ERROR_ISV_NO_USER         = 13000,	/* 32C8 */    /* the user doesn't exist */
 
 	/* Error codes of Lua scripts */
 	MSP_ERROR_LUA_BASE						= 14000,    /* 0x36B0 */
 	MSP_ERROR_LUA_YIELD						= 14001,	/* 0x36B1 */
 	MSP_ERROR_LUA_ERRRUN					= 14002,	/* 0x36B2 */
-	MSP_ERROR_LUA_ERRSYNTAX					= 14003,	/* 0x36B3 */
+	MSP_ERROR_LUA_ERRSYNTAX				= 14003,	/* 0x36B3 */
 	MSP_ERROR_LUA_ERRMEM					= 14004,	/* 0x36B4 */
 	MSP_ERROR_LUA_ERRERR					= 14005,	/* 0x36B5 */
 };

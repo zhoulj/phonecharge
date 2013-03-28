@@ -23,6 +23,7 @@
 #pragma once
 #include <string.h>;
 #include "IFSR.h";
+#include "LogFile.h"
 
 class CQISR : public CIFSR
 {
@@ -84,8 +85,9 @@ protected:
   | 返回值：  无                                                     |
   | 说明：无                                                         |
   |******************************************************************/
-	const char* getExID(void);
+	const char* getExID(void);  
 
 private:
+  CLogFileEx * m_pLogFileEx;
   char exID[128];//语法ID
 };

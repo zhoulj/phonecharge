@@ -1,11 +1,11 @@
 /*******************************************************************
-| Copyright (c) 2013,长春威致科技有限公司                        |
+| Copyright (c) 2013,长春威致科技有限公司                          |
 | All rights reserved.                                             |
 |------------------------------------------------------------------|
-| 文件名称：SoundBase.h                                               |
+| 文件名称：SoundBase.h                                            |
 | 文件标识：                                                       |
-| 摘要：    本文件定义了类CSoundBase及它的一些成员                    |
-| 其它说明：语音识别需要录制的wave文件，从声卡获取语音数据                                                   |
+| 摘要：    本文件定义了类CSoundBase及它的一些成员                 |
+| 其它说明：语音识别需要录制的wave文件，从声卡获取语音数据         |
 | 当前版本：                                                       |
 | 作    者：                                                       |
 | 完成日期：                                                       |
@@ -70,7 +70,7 @@ class CSoundBase
 public:
 	void StopPlaying();
   /*******************************************************************
-  | 函数名称：StopRecording停止录音                                               |
+  | 函数名称：StopRecording停止录音                                  |
   | 函数功能：停止录音并保存录音文件                                 |
   | 输入参数：无                                                     |
   | 输出参数：无                                                     |
@@ -82,11 +82,11 @@ public:
 	static CSoundBase* GetInstance();
 	BOOL Play(const TCHAR *pszPath = NULL);
   /*******************************************************************
-  | 函数名称：Record录音                                               |
+  | 函数名称：Record录音                                             |
   | 函数功能：得到要录制的文件名并开始录音                           |
-  | 输入参数：pszPath录音的文件名                 |
-  |           PWAVEFORMAT_SETTING                 |
-  |           pWaveFormat                         |
+  | 输入参数：pszPath录音的文件名                                    |
+  |           PWAVEFORMAT_SETTING                                    |
+  |           pWaveFormat                                            |
   | 输出参数：无                                                     |
   | 返回值：  无                                                     |
   | 说明：   无                                                      |

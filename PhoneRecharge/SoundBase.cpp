@@ -64,13 +64,10 @@ CSoundBase::CSoundBase()
 	m_hSaveFile = NULL;
 	m_bRecording = FALSE;
 	m_dwDataLength = 0;
-
-
 }
 
 CSoundBase::~CSoundBase()
 {
-
 	if(m_pWaveHdr1 != NULL)
 	{
 		free(m_pWaveHdr1);
@@ -94,7 +91,6 @@ CSoundBase::~CSoundBase()
 		free(m_pBuffer2);
 		m_pBuffer2 = NULL;
 	}
-
 }
 
 //----------------------------------------------------------------------
@@ -126,7 +122,6 @@ BOOL CSoundBase::Record(TCHAR *pszPath,const PWAVEFORMAT_SETTING pWaveFormat)
 	{
 		goto END;
 	}
-
 
 	//allocate memory for wave header
 	m_pWaveHdr1=reinterpret_cast<PWAVEHDR>(malloc(sizeof(WAVEHDR)));
@@ -164,7 +159,6 @@ BOOL CSoundBase::Record(TCHAR *pszPath,const PWAVEFORMAT_SETTING pWaveFormat)
 
 	if (WriteWaveFileHeader(m_szSavePath,&m_WaveFormatEx,0,TRUE) == FALSE)
 	{
-
 		goto END;
 	}
 
@@ -299,9 +293,7 @@ void CSoundBase::StopRecording()
 	{
 		free(m_pBuffer2);
 		m_pBuffer2 = NULL;
-	}
-
-	
+	}	
 }
 
 //----------------------------------------------------------------------
@@ -332,7 +324,6 @@ BOOL CSoundBase::Play(const TCHAR *pszPath)
 		return FALSE;
 	}
 	return TRUE;	
-
 }
 
 
@@ -403,7 +394,6 @@ void CSoundBase::SetRecordWaveFormat(const PWAVEFORMAT_SETTING pWaveFormat)
 	
 	m_WaveFormatEx.nBlockAlign=m_WaveFormatEx.nChannels * m_WaveFormatEx.wBitsPerSample / 8;	
 	m_WaveFormatEx.nAvgBytesPerSec=m_WaveFormatEx.nBlockAlign * m_WaveFormatEx.nSamplesPerSec;
-
 }
 
 
@@ -455,10 +445,7 @@ void CALLBACK CSoundBase::WaveInProc(HWAVEIN hWi, UINT uMsg, DWORD dwInstance, D
 			m_pInstance->OnWIM_OPEN(dwParam1,dwParam2);
 			break;
 	}
-
 }
-
-
 
 //----------------------------------------------------------------------
 //Decription:
@@ -549,7 +536,6 @@ ERROR_EXIT:
 	return bResult;
 }
 
-
 //----------------------------------------------------------------------
 //Decription:
 //	On WIM_CLOSE
@@ -567,7 +553,6 @@ void CSoundBase::OnWIM_CLOSE(WPARAM wParam, LPARAM lParam)
 		//Write the data length to the file.
 		WriteWaveFileHeader(m_szSavePath,&m_WaveFormatEx,m_dwDataLength,FALSE);
 	}
-
 }
 
 //----------------------------------------------------------------------

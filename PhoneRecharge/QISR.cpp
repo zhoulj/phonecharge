@@ -5,7 +5,6 @@
 #include "windows.h"
 #include "./include/qisr.h"
 #include <conio.h>
-#include "LogFile.h"
 using namespace std;
 
 #pragma comment(lib,"./lib/msc.lib")
@@ -13,21 +12,16 @@ using namespace std;
 
 const int BUFFER_NUM = 4096;
 const int MAX_KEYWORD_LEN = 4096;
-static CLogFileEx *g_pLogFile = NULL;
+//static CLogFileEx *g_pLogFile = NULL;
 
 CQISR::CQISR(void)
 {
-  exID[128]=NULL;
-  g_pLogFile = new CLogFileEx();
-  
-//  LogFileEx gLog(".\\Log", LogFileEx :: MONTH);
-  //g_pLogFile->GetFileName()
+  memset(exID,0,128);
+  m_pLogFileEx = CLogFileEx::GetInstance(); 
 }
 
 CQISR::~CQISR(void)
 {
-  if(g_pLogFile != NULL)
-    delete g_pLogFile;
 }
 
 /*******************************************************************
@@ -35,19 +29,18 @@ CQISR::~CQISR(void)
 | 函数功能：初始化语音识别对象                                     |
 | 输入参数：无                                                     |
 | 输出参数：无                                                     |
-| 返回值：  无                                                     |
+| 返回值：  0成功，其他数值失败                                    |
 | 说明：无                                                         |
 |******************************************************************/
 int CQISR::SRInit()
 {
-  int ret = MSP_SUCCESS;
+  int nRet = MSP_SUCCESS;
   //appid 请勿随意改动
-  ret = QISRInit("appid=5142e191");    
-  if(ret != MSP_SUCCESS)
+  nRet = QISRInit("appid=5142e191");    
+  if(nRet != MSP_SUCCESS)
   {
-    //g_pLogFile->Log("QISRInit with errorCode: %d \n",ret);
-    printf("QISRInit with errorCode: %d \n", ret);
-    return ret;
+    m_pLogFileEx->Log("SR---QISRInit with errorCode: %d \n",nRet);    
+    return nRet;
   }  
   return 0;
 }
@@ -56,9 +49,9 @@ int CQISR::SRInit()
 | 函数名称：语音识别                                               |
 | 函数功能：对接收的语音文件，上传服务器进行语音识别，             |
 |            并将识别的结果文本返回                                |
-| 输入参数：wavfile语音识别pcm16位wave文件，SpeechText返回识别结果 |
-| 输出参数：无                                                     |
-| 返回值：  无                                                     |
+| 输入参数：wavfile语音识别pcm16位wave文件                         |
+| 输出参数：SpeechText返回文本型识别结果                           |
+| 返回值：  0成功，-1或其他值失败，具体数值含义见msp_errors.h      |
 | 说明：无                                                         |
 |******************************************************************/
 int CQISR::FileSpeechRecognition(char* wavfile,char* SpeechText)
@@ -73,28 +66,28 @@ int CQISR::FileSpeechRecognition(char* wavfile,char* SpeechText)
   const char* param = "rst=plain,sub=asr,ssm=1,aue=speex,auf=audio/L16;rate=16000";//注意sub=asr
   const char* sess_id = QISRSessionBegin(exID, param, &ret);//将语法ID传入QISRSessionBegin
   if ( MSP_SUCCESS != ret )
-  {
-    printf("QISRSessionBegin err %d\n", ret);	
+  {    
+    m_pLogFileEx->Log("SR---QISRSessionBegin err %d\n",ret); 
     return ret;
   }
-
+  
+  //打开要识别的语音文件
   fp = fopen(wavfile , "rb");
   if ( NULL == fp )
-  {
-    printf("failed to open file,please check the file.\n");
+  {    
+    m_pLogFileEx->Log("SR---failed to open speech recognition wave file,please check the file.\n",ret); 
     QISRSessionEnd(sess_id, "normal");
     return -1;
   }
-    
-  printf("writing audio...\n");
+  //读取语音文件，并发送到服务器进行识别，返回识别的处理结果或错误信息    
   while ( !feof(fp) )
   {
     len = fread(buff, 1, BUFFER_NUM, fp);
 
     ret = QISRAudioWrite(sess_id, buff, len, status, &ep_status, &rec_status);
     if ( ret != MSP_SUCCESS )
-    {
-      printf("\nQISRAudioWrite err %d\n", ret);
+    {      
+      m_pLogFileEx->Log("SR---QISRAudioWrite err %d\n", ret);
       break;
     }
 
@@ -103,33 +96,30 @@ int CQISR::FileSpeechRecognition(char* wavfile,char* SpeechText)
       const char* result = QISRGetResult(sess_id, &rslt_status, 0, &ret);
       if (ret != MSP_SUCCESS )
       {
-        printf("error code: %d\n", ret);
+        m_pLogFileEx->Log("SR---error code: %d\n", ret);
         break;
       }
       else if( rslt_status == MSP_REC_STATUS_NO_MATCH )
-        printf("get result nomatch\n");
+        m_pLogFileEx->Log("SR---get result nomatch\n");
       else
       {
         if ( result != NULL )
-          printf("get result[%d/%d]:len:%d\n %s\n", ret, rslt_status,strlen(result), result);
+          m_pLogFileEx->Log("SR---get result");//[%d/%d]:len:%d\n %s\n", ret, rslt_status,strlen(result), result);
       }
     }
-    printf(".");
     Sleep(120);
   }
-  printf("\n");
 
   if (ret == MSP_SUCCESS)
   {	
     status = MSP_AUDIO_SAMPLE_LAST;
     ret = QISRAudioWrite(sess_id, buff, 1, status, &ep_status, &rec_status);
     if ( ret != MSP_SUCCESS )
-      printf("QISRAudioWrite write last audio err %d\n", ret);
+       m_pLogFileEx->Log("SR---QISRAudioWrite write last audio err %d\n", ret);
   }
 
   if (ret == MSP_SUCCESS)
   {	
-    printf("get reuslt\n");
     char asr_result[1024] = "";
     int pos_of_result = 0;
     int loop_count = 0;
@@ -138,40 +128,40 @@ int CQISR::FileSpeechRecognition(char* wavfile,char* SpeechText)
       const char* result = QISRGetResult(sess_id, &rslt_status, 0, &ret);
       if ( ret != 0 )
       {
-        printf("QISRGetResult err %d\n", ret);
+        m_pLogFileEx->Log("SR---QISRGetResult err %d\n", ret);
         break;
       }
 
       if( rslt_status == MSP_REC_STATUS_NO_MATCH )
-      {
-        printf("get result nomatch\n");
+      {       
+        m_pLogFileEx->Log("SR---get result nomatch\n");
       }
       else if ( result != NULL )
       {
-        printf("[%d]:get result[%d/%d]: %s\n", (loop_count), ret, rslt_status, result);
+        //m_pLogFileEx->Log("SR---[%d]:get result[%d/%d]: %s\n", (loop_count), ret, rslt_status, result);       
         strcpy(asr_result+pos_of_result,result);
         pos_of_result += strlen(result);
-        strTextSR = result;
-        //if (strTextSR.find("input=") > 0)
-          //strTextSR = strTextSR.substr(strTextSR.find("input=") + 6,strTextSR.length());
+        strTextSR = result;        
         strTextSR = strTextSR.substr(strTextSR.find("input=") + 6,strTextSR.length());
-        strcpy(SpeechText,strTextSR.c_str());//zlj add        
+        strcpy(SpeechText,strTextSR.c_str());      
       }
       else
       {
-        printf("[%d]:get result[%d/%d]\n",(loop_count), ret, rslt_status);
+        //m_pLogFileEx->Log("SR---[%d]:get result[%d/%d]\n",(loop_count), ret, rslt_status);       
       }
       Sleep(500);
     } while (rslt_status != MSP_REC_STATUS_COMPLETE && loop_count++ < 30);
     if (strcmp(asr_result,"")==0)
     {
-      printf("no result\n");
+      m_pLogFileEx->Log("SR---speech recognition wave file no result\n"); 
+      QISRSessionEnd(sess_id, NULL);
+      fclose(fp); 
       return MSP_ERROR_TIME_OUT;
     }
   }
 
   QISRSessionEnd(sess_id, NULL);
-  printf("QISRSessionEnd.\n");
+  m_pLogFileEx->Log("SR---speech recognition QISRSessionEnd Success.\n"); 
   fclose(fp); 
   return 0;
 }
@@ -218,6 +208,7 @@ int  CQISR::SendSyntax(char * asr_keywords_utf8)
   int len = fread(UserData, 1, MAX_KEYWORD_LEN, fp);
   UserData[len] = 0;
   fclose(fp);
+  //提交语法关键字数据，成功则服务器返回语法ID
   const char* testID = QISRUploadData(sessionID, "contact", UserData, len, "dtt=keylist", &ret);
   if(ret != MSP_SUCCESS)
   {
@@ -225,7 +216,7 @@ int  CQISR::SendSyntax(char * asr_keywords_utf8)
     return ret;
   }
   memcpy((void*)exID, testID, strlen(testID));
-  printf("exID: \"%s\" \n", exID);//将获得的exID输出到屏幕上
+  //m_pLogFileEx->Log("SR---Get New exID: \"%s\" \n", exID);  
 
   QISRSessionEnd(sessionID, "normal");
   return 0;
@@ -236,7 +227,7 @@ int  CQISR::SendSyntax(char * asr_keywords_utf8)
 | 函数功能：获得当前语法ID                                         |
 | 输入参数：无                                                     |
 | 输出参数：无                                                     |
-| 返回值：  无                                                     |
+| 返回值：  返回当前系统用的语法ID                                 |
 | 说明：无                                                         |
 |******************************************************************/
 const char* CQISR::getExID(void)
@@ -249,15 +240,14 @@ const char* CQISR::getExID(void)
 | 函数功能：从配置文件中获得语法ID，并设置语法ID公共变量           |
 | 输入参数：exID数字和字母的长字符串                               |
 | 输出参数：无                                                     |
-| 返回值：  0成功，其他失败                                        |
+| 返回值：  0成功，-1失败                                        |
 | 说明：无                                                         |
 |******************************************************************/
 int CQISR::SetExID(char strexID[128])
 {
   if (strexID != NULL)
   {
-    strcpy(exID,strexID);
-    //memcpy((void*)exID, strexID, strlen(strexID));
+    strcpy(exID,strexID);    
     return 0;
   }  
   return -1;
