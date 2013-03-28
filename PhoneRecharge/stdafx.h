@@ -12,6 +12,6 @@
 #include <windows.h>
 #include <tchar.h>
 
-
+static int g_nFlag = 0;   // At指令结果标志
 
 // TODO: 在此处引用程序需要的其他头文件

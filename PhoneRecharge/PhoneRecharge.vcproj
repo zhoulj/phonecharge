@@ -176,6 +176,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\com.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\dllmain.cpp"
 				>
 				<FileConfiguration
@@ -257,6 +261,10 @@
 			>
 			<File
 				RelativePath=".\AtControl.h"
+				>
+			</File>
+			<File
+				RelativePath=".\com.h"
 				>
 			</File>
 			<File

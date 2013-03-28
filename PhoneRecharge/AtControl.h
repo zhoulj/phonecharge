@@ -1,5 +1,7 @@
 #pragma once
 
+#include "com.h"    // 引入串口通讯工具类
+
 class CAtControl
 {
 public:
@@ -10,4 +12,7 @@ public:
 	
 	CAtControl(void);
 	~CAtControl(void);
+private:
+  Ccom m_Comm;
+  HANDLE m_hRecvEvent;
 };
