@@ -21,8 +21,8 @@
 |                                                                  |
 |******************************************************************/
 #pragma once
-#include <string.h>;
-#include "IFSR.h";
+#include <string.h>
+#include "IFSR.h"
 #include "LogFile.h"
 
 class CQISR : public CIFSR
