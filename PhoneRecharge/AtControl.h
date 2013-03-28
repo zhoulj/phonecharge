@@ -67,6 +67,6 @@ public:
 	CAtControl(void);
 	~CAtControl(void);
 private:
-  Ccom m_Comm;
-  HANDLE m_hRecvEvent;
+  Ccom m_Comm;    // 串口通讯类对象
+  HANDLE m_hRecvEvent;  // 标实串口返回信息的事件对象
 };
