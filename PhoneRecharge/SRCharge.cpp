@@ -33,11 +33,17 @@ using namespace std;
 // 这是导出函数的一个示例。
 //static CIFSR *g_pclSr = NULL;
 static CQISR *g_pQISR = NULL;
-static CAtControl *g_pclAtCtrl = NULL;
 
 CSRCharge::CSRCharge(void)
 {
-  g_pQISR = new CQISR();
+  if (g_pQISR == NULL)
+  {
+    g_pQISR = new CQISR();
+  }  
+  if (g_pclAtCtrl == NULL)
+  {  
+    g_pclAtCtrl = new CAtControl();
+  }
 }
 
 CSRCharge::~CSRCharge(void)
@@ -55,7 +61,7 @@ int CSRCharge::SRChargeInit()
   waveFormat.channel = CHANNEL_SINGLE;
   waveFormat.samples = SAMPLES_16000;
   //初始化At指令设备
-  g_pclAtCtrl = new CAtControl();
+
 	return 0;
 }
 /*CIniWriter(char* szFileName)

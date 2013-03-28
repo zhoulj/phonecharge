@@ -13,6 +13,7 @@ CAtControl::~CAtControl(void)
     m_hRecvEvent = INVALID_HANDLE_VALUE;
   }
 }
+
 int CAtControl::AtInit()
 {
   m_hRecvEvent = CreateEvent(NULL, TRUE, FALSE, NULL);

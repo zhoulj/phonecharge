@@ -3,8 +3,8 @@
 #include "stdafx.h"
 #include "PhoneRecharge.h"
 #include "SRCharge.h"
-#include "AtControl.h"
-#include "QISR.h"
+//#include "AtControl.h"
+//#include "QISR.h"
 #include "MicrosoftSR.h"
 #include "LogFile.h"
 

@@ -53,4 +53,5 @@ protected:
     WAVEFORMAT_SETTING waveFormat;
 private:
   CLogFileEx * m_pLogFileEx;
+  CAtControl *g_pclAtCtrl;
 };
