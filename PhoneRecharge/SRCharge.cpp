@@ -36,14 +36,8 @@ static CQISR *g_pQISR = NULL;
 
 CSRCharge::CSRCharge(void)
 {
-  if (g_pQISR == NULL)
-  {
-    g_pQISR = new CQISR();
-  }  
-  if (g_pclAtCtrl == NULL)
-  {  
-    g_pclAtCtrl = new CAtControl();
-  }
+  g_pQISR = NULL;
+  g_pclAtCtrl = NULL;
 }
 
 CSRCharge::~CSRCharge(void)
@@ -53,8 +47,18 @@ CSRCharge::~CSRCharge(void)
   if(g_pclAtCtrl)
     delete g_pclAtCtrl;
 }
+
 int CSRCharge::SRChargeInit()
 {  
+  if (g_pQISR == NULL)
+  {
+    g_pQISR = new CQISR();
+  }  
+  if (g_pclAtCtrl == NULL)
+  {  
+    g_pclAtCtrl = new CAtControl();
+  }
+
   //创建录音实例并设置录音参数
   m_pPlayer = CSoundBase::GetInstance();
   waveFormat.bits = BITS_16;
@@ -64,14 +68,10 @@ int CSRCharge::SRChargeInit()
 
 	return 0;
 }
-/*CIniWriter(char* szFileName)
-{
-  memset(m_szFileName, 0x00, 255);
-  memcpy(m_szFileName, szFileName, strlen(szFileName));
-  char szValue[255];
-  sprintf(szValue, "%d", iValue);
-  WritePrivateProfileString(szSection,  szKey, szValue, m_szFileName); 
-}*/
+
+//
+// 
+//
 int CSRCharge::Recharge(char* strPhoneNum,char* strCardPassword)
 {  
   char cResult[500],cTemp[3];

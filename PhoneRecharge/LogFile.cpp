@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "LogFile.h"
 
+
 CLogFile::CLogFile(const char *szFileName)//设定日志文件名
 {
 	_szFileName = NULL;

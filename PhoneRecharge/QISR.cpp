@@ -12,12 +12,11 @@ using namespace std;
 
 const int BUFFER_NUM = 4096;
 const int MAX_KEYWORD_LEN = 4096;
-//static CLogFileEx *g_pLogFile = NULL;
 
 CQISR::CQISR(void)
 {
   memset(exID,0,128);
-  m_pLogFileEx = CLogFileEx::GetInstance(); 
+  m_pLogFileEx = CLogFileEx::GetInstance();
 }
 
 CQISR::~CQISR(void)

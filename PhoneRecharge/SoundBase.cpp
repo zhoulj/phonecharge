@@ -163,11 +163,12 @@ BOOL CSoundBase::Record(TCHAR *pszPath,const PWAVEFORMAT_SETTING pWaveFormat)
 	}
 
 	// Open the existing wave file incording to add wave data
-	m_hSaveFile = CreateFile(m_szSavePath, GENERIC_WRITE, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
+	m_hSaveFile = CreateFile(m_szSavePath, GENERIC_WRITE, FILE_SHARE_READ, NULL, CREATE_NEW, 0, NULL);
 	if( m_hSaveFile == INVALID_HANDLE_VALUE ) 
 	{
 		goto END;
-    }
+  }
+
 	//Set the file pointer to the end.
 	SetFilePointer(m_hSaveFile,0,NULL,FILE_END);
 
@@ -175,6 +176,7 @@ BOOL CSoundBase::Record(TCHAR *pszPath,const PWAVEFORMAT_SETTING pWaveFormat)
 	waveInStart (m_hWaveIn) ;
 
 	bResult = TRUE;
+
 END:
 	if(bResult == FALSE)
 	{

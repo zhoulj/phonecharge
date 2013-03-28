@@ -103,7 +103,6 @@ protected:
 	}
 public:
 	enum LOG_TYPE{YEAR = 0, MONTH = 1, DAY = 2};
-	CLogFileEx(const char *szPath = ".", LOG_TYPE iType = MONTH);
 	~CLogFileEx();
 	const char * GetPath();
 	void Log(LPCVOID lpBuffer, DWORD dwLength);
@@ -117,6 +116,7 @@ public:
     return m_pInstance; 
   }
 private://屏蔽函数
+	CLogFileEx(const char *szPath = ".", LOG_TYPE iType = MONTH);
 	CLogFileEx(const CLogFileEx&);
 	CLogFileEx&operator = (const CLogFileEx&);
 
@@ -132,6 +132,7 @@ private://屏蔽函数
         delete CLogFileEx::m_pInstance;
     }
   };
+  //释放内存
   static CGarbo Garbo; // 声明一个静态成员，在程序结束时，系统会调用它的析构函数，注意这里仅仅是声明，还需要在相应cpp文件中对静态成员进行定义。
 
 };
