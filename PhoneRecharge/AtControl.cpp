@@ -103,7 +103,7 @@ int CAtControl::AtDial(char* ServiceNum)//拨充值服务号号
 int CAtControl::AtHangup()  // 挂断
 {
   // 发送挂断指令
-  m_Comm.SendData("ATH", strlen("ATH") * sizeof(char) + 1);
+  m_Comm.SendData("ATH\r\n", strlen("ATH\r\n") * sizeof(char) + 1);
   // 等待返回结果
   DWORD dwRet = WaitForSingleObject(m_hRecvEvent, 10000);
   if (dwRet == WAIT_OBJECT_0)
@@ -142,6 +142,8 @@ int CAtControl::SendKeying(char* KeyingValue)//发送按键值
   memset(strSendData, 0, 100);
   strcpy(strSendData, "AT+VTS=");
   strcat(strSendData, KeyingValue);
+  strcat(strSendData, "\r\n");
+
   m_Comm.SendData(strSendData, strlen(strSendData) * sizeof(char) + 1);
 
   // 等待返回结果
