@@ -166,6 +166,7 @@ public:
 	bool	IsOpened();
 
   bool SendData(char * pDataToWrite, WORD dwSizeofDataToWrite);
+  static int m_nAtRet;  // 0:Init  1:OK  -1:ERROR  -2:NO CARRIER
 };
 
 #endif // !defined(AFX_COM_H__B6972783_9F49_4703_BCC9_64A01236F7C9__INCLUDED_)

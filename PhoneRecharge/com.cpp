@@ -361,57 +361,37 @@ bool CReadThread::HandleCommEvent(OVERLAPPED * lpOverlappedCommEvent, LPDWORD lp
 
 bool CReadThread::ReceiveData(char * lpNewString, DWORD dwSizeofNewString)
 {
-  /*
-	if(!PostMessage(hComm32Window,PWM_GOTCOMMDATA,(WPARAM)dwSizeofNewString, (LPARAM)lpNewString ) )
-	{
-        PostHangupCall();
-	}
-	else
-		return true;
-	return false;
-  */
-  // 串口有字符输出
-  /*
-  if (strlen(lpNewString) >= 2)
-  {
-    int nLen = strlen(lpNewString);
-    printf("%s(%d)\n", lpNewString, nLen);
-    
-    if (nLen > 2)
-    {
-      if (NULL == strstr(lpNewString, "ATD"))
-      {
-        SetEvent(hRecvEvent);
-      }
-    }
+  // At状态
+  Ccom::m_nAtRet = 0;
+  int i,j=0;
+  char sp[512];
+  memset(sp, 0, 512);
+  for (i = 0; *(lpNewString + i) != '\0'; i++) {
+    if (*(lpNewString + i) == 10 || *(lpNewString + i) == 13)
+      continue;
+    sp[j++]=*(lpNewString + i);
   }
-  */
-  int nLen = strlen(lpNewString);
-  if (nLen < 2)
+  sp[j] = 0;
+  int nRet = strlen(sp);
+  if(nRet < 2)
+    return true;
+  if (NULL != strstr(sp, "OK"))
   {
-    return 1;
-  }
-  if (NULL != strstr(lpNewString, "ATD"))
-  {
-    printf("拨号中...\n");
-  }
-  else if(NULL != strstr(lpNewString, "ATH"))
-  {
-    printf("挂断电话...\n");
-  }
-  else
-  {
-    if (NULL != strstr(lpNewString, "OK"))
-    {
-      printf("OK\n");
-      g_nFlag = 0;
-    }
-    else
-    {
-      printf("不OK%d\n", nLen);
-      g_nFlag = -1;
-    }
+    Ccom::m_nAtRet = 1;
     SetEvent(hRecvEvent);
+    return true;
+  }
+  else if (NULL != strstr(sp, "ERROR"))
+  {
+    Ccom::m_nAtRet = -1;
+    SetEvent(hRecvEvent);
+    return false;
+  }
+  else if (NULL != strstr(sp, "NO CARRIER"))
+  {
+    Ccom::m_nAtRet = -2;
+    SetEvent(hRecvEvent);
+    return false;
   }
   return true;
 }
@@ -657,6 +637,9 @@ EndWriteThread:
 //////////////////////////////////////////////////////////////////////
 // Ccom
 //////////////////////////////////////////////////////////////////////
+
+int Ccom::m_nAtRet = 0;
+
 Ccom::Ccom()
 {
 

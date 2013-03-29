@@ -71,24 +71,27 @@ int CAtControl::AtDial(char* ServiceNum)//拨充值服务号号
   m_Comm.SendData(strSendData, strlen(strSendData) * sizeof(char) + 1);
   // 等待返回结果
   DWORD dwRet = WaitForSingleObject(m_hRecvEvent, 10000);
-  if (dwRet == WAIT_OBJECT_0)
-  {
-    // 串口输入数据成功
-    ResetEvent(m_hRecvEvent);
-    return 0;
-  }
-  else if(dwRet == WAIT_TIMEOUT)
+  if(dwRet == WAIT_TIMEOUT)
   {
     // time lost
     return -1;
   }
   else
   {
-    if (g_nFlag == -1)
+    if (Ccom::m_nAtRet == 1)
+    {
+      return 1;
+    }
+    else if (Ccom::m_nAtRet == -1)
     {
       return -2;
     }
+    else if (Ccom::m_nAtRet == -2)
+    {
+      return -3;
+    }
   }
+  ResetEvent(m_hRecvEvent);
   return 0;
 }
 
@@ -106,24 +109,27 @@ int CAtControl::AtHangup()  // 挂断
   m_Comm.SendData("ATH\r\n", strlen("ATH\r\n") * sizeof(char) + 1);
   // 等待返回结果
   DWORD dwRet = WaitForSingleObject(m_hRecvEvent, 10000);
-  if (dwRet == WAIT_OBJECT_0)
-  {
-    // 串口输入数据成功
-    ResetEvent(m_hRecvEvent);
-    return 0;
-  }
-  else if(dwRet == WAIT_TIMEOUT)
+  if(dwRet == WAIT_TIMEOUT)
   {
     // time lost
     return -1;
   }
   else
   {
-    if (g_nFlag == -1)
+    if (Ccom::m_nAtRet == 1)
+    {
+      return 1;
+    }
+    else if (Ccom::m_nAtRet == -1)
     {
       return -2;
     }
+    else if (Ccom::m_nAtRet == -2)
+    {
+      return -3;
+    }
   }
+  ResetEvent(m_hRecvEvent);
   return 0;
 }
 
@@ -148,23 +154,26 @@ int CAtControl::SendKeying(char* KeyingValue)//发送按键值
 
   // 等待返回结果
   DWORD dwRet = WaitForSingleObject(m_hRecvEvent, 10000);
-  if (dwRet == WAIT_OBJECT_0)
-  {
-    // 串口输入数据成功
-    ResetEvent(m_hRecvEvent);
-    return 0;
-  }
-  else if(dwRet == WAIT_TIMEOUT)
+  if(dwRet == WAIT_TIMEOUT)
   {
     // time lost
     return -1;
   }
   else
   {
-    if (g_nFlag == -1)
+    if (Ccom::m_nAtRet == 1)
+    {
+      return 1;
+    }
+    else if (Ccom::m_nAtRet == -1)
     {
       return -2;
     }
+    else if (Ccom::m_nAtRet == -2)
+    {
+      return -3;
+    }
   }
+  ResetEvent(m_hRecvEvent);
   return 0;
 }
