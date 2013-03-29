@@ -23,10 +23,26 @@
 #include "StdAfx.h"
 #include "AtControl.h"
 
+/*******************************************************************
+| 函数名称：构造函数                                               |
+| 函数功能：初始化CAtControl对象                                   |
+| 输入参数：无                                                     |
+| 输出参数：无                                                     |
+| 返回值：  无                                                     |
+| 说明：无                                                         |
+|******************************************************************/
 CAtControl::CAtControl(void)
 {
 }
 
+/*******************************************************************
+| 函数名称：析构函数                                               |
+| 函数功能：释放CAtControl对象的资源                               |
+| 输入参数：无                                                     |
+| 输出参数：无                                                     |
+| 返回值：  无                                                     |
+| 说明：无                                                         |
+|******************************************************************/
 CAtControl::~CAtControl(void)
 {
   if (INVALID_HANDLE_VALUE != m_hRecvEvent)
@@ -60,6 +76,14 @@ int CAtControl::AtInit()
   return 0;
 }
 
+/*******************************************************************
+| 函数名称：拨号                                                   |
+| 函数功能：通过Com口At指令拨号                                    |
+| 输入参数：要播的号码                                             |
+| 输出参数：无                                                     |
+| 返回值：  0成功，其他失败                                        |
+| 说明：无                                                         |
+|******************************************************************/
 int CAtControl::AtDial(char* ServiceNum)//拨充值服务号号
 {
   // 发送拨号指令
@@ -74,25 +98,27 @@ int CAtControl::AtDial(char* ServiceNum)//拨充值服务号号
   if(dwRet == WAIT_TIMEOUT)
   {
     // time lost
+    ResetEvent(m_hRecvEvent);
     return -1;
   }
   else
   {
     if (Ccom::m_nAtRet == 1)
     {
-      return 1;
+      ResetEvent(m_hRecvEvent);
+      return 0;
     }
     else if (Ccom::m_nAtRet == -1)
     {
+      ResetEvent(m_hRecvEvent);
       return -2;
     }
     else if (Ccom::m_nAtRet == -2)
     {
+      ResetEvent(m_hRecvEvent);
       return -3;
     }
   }
-  ResetEvent(m_hRecvEvent);
-  return 0;
 }
 
 /*******************************************************************
@@ -112,25 +138,27 @@ int CAtControl::AtHangup()  // 挂断
   if(dwRet == WAIT_TIMEOUT)
   {
     // time lost
+    ResetEvent(m_hRecvEvent);
     return -1;
   }
   else
   {
     if (Ccom::m_nAtRet == 1)
     {
-      return 1;
+      ResetEvent(m_hRecvEvent);
+      return 0;
     }
     else if (Ccom::m_nAtRet == -1)
     {
+      ResetEvent(m_hRecvEvent);
       return -2;
     }
     else if (Ccom::m_nAtRet == -2)
     {
+      ResetEvent(m_hRecvEvent);
       return -3;
     }
   }
-  ResetEvent(m_hRecvEvent);
-  return 0;
 }
 
 /*******************************************************************
@@ -157,23 +185,25 @@ int CAtControl::SendKeying(char* KeyingValue)//发送按键值
   if(dwRet == WAIT_TIMEOUT)
   {
     // time lost
+    ResetEvent(m_hRecvEvent);
     return -1;
   }
   else
   {
     if (Ccom::m_nAtRet == 1)
     {
-      return 1;
+      ResetEvent(m_hRecvEvent);
+      return 0;
     }
     else if (Ccom::m_nAtRet == -1)
     {
+      ResetEvent(m_hRecvEvent);
       return -2;
     }
     else if (Ccom::m_nAtRet == -2)
     {
+      ResetEvent(m_hRecvEvent);
       return -3;
     }
   }
-  ResetEvent(m_hRecvEvent);
-  return 0;
 }
