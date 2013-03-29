@@ -121,7 +121,7 @@ private://屏蔽函数
 	CLogFileEx&operator = (const CLogFileEx&);
 
 
-  //定义静态类实例变量
+  // 定义静态类实例变量
   static  CLogFileEx *m_pInstance;
   class CGarbo // 它的唯一工作就是在析构函数中删除CSingleton的实例 
   {
@@ -134,6 +134,5 @@ private://屏蔽函数
   };
   //释放内存
   static CGarbo Garbo; // 声明一个静态成员，在程序结束时，系统会调用它的析构函数，注意这里仅仅是声明，还需要在相应cpp文件中对静态成员进行定义。
-
 };
 #endif
