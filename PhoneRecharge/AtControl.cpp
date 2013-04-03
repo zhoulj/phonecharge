@@ -207,3 +207,50 @@ int CAtControl::SendKeying(char* KeyingValue)//发送按键值
     }
   }
 }
+
+/*******************************************************************
+| 函数名称：话筒模式                                               |
+| 函数功能：通过At指令向Com口发送命令改变听筒模式                  |
+| 输入参数：无                                                     |
+| 输出参数：无                                                     |
+| 返回值：  0成功，其他失败                                        |
+| 说明：无                                                         |
+|******************************************************************/
+int CAtControl::MicroPhone()
+{
+  // 发送按键消息指令
+  char strSendData[100];
+  memset(strSendData, 0, 100);
+  strcpy(strSendData, "AT+SPEAKER=1");
+  strcat(strSendData, KeyingValue);
+  strcat(strSendData, "\r\n");
+
+  m_Comm.SendData(strSendData, strlen(strSendData) * sizeof(char) + 1);
+
+  // 等待返回结果
+  DWORD dwRet = WaitForSingleObject(m_hRecvEvent, 10000);
+  if(dwRet == WAIT_TIMEOUT)
+  {
+    // time lost
+    ResetEvent(m_hRecvEvent);
+    return -1;
+  }
+  else
+  {
+    if (Ccom::m_nAtRet == 1)
+    {
+      ResetEvent(m_hRecvEvent);
+      return 0;
+    }
+    else if (Ccom::m_nAtRet == -1)
+    {
+      ResetEvent(m_hRecvEvent);
+      return -2;
+    }
+    else if (Ccom::m_nAtRet == -2)
+    {
+      ResetEvent(m_hRecvEvent);
+      return -3;
+    }
+  }
+}
